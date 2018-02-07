@@ -77,14 +77,18 @@ describe CSVImporter do
   class ImportUserCSVByFirstName
     include CSVImporter
 
+    class ConfirmedProcessor
+      def self.call(confirmed, model)
+        model.confirmed_at = confirmed == "true" ? Time.new(2012) : nil
+      end
+    end
+
     model User
 
     column :email, required: true
     column :first_name, to: :f_name, required: true
     column :last_name,  to: :l_name
-    column :confirmed,  to: ->(confirmed, model) do
-      model.confirmed_at = confirmed == "true" ? Time.new(2012) : nil
-    end
+    column :confirmed,  to: ConfirmedProcessor
 
     identifier :f_name
 
