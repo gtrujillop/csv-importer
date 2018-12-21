@@ -38,5 +38,15 @@ module CSVImporter
       reader = CSVReader.new(content: "メール,氏名".encode('SJIS'), encoding: 'SJIS:UTF-8')
       expect(reader.header).to eq ["メール", "氏名"]
     end
+
+    it 'supports custom column separator' do
+      reader = CSVReader.new(content: "email, first_name, last_name", col_sep: ",")
+      expect(reader.header).to eq ["email", "first_name", "last_name"]
+    end
+
+    it 'supports custom column separator' do
+      reader = CSVReader.new(content: "email; first_name; last_name", col_sep: ";")
+      expect(reader.header).to eq ["email", "first_name", "last_name"]
+    end
   end
 end
